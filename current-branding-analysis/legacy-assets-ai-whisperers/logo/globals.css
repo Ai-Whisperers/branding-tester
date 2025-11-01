@@ -1,0 +1,33 @@
+/* AI Whisperers Logo Color Palette */
+
+:root {
+  /* Light Mode - Original Gradient */
+  --gradient-start: #1B3CFF;      /* Deep Blue */
+  --gradient-middle: #3BA6FF;     /* Light Cyan/Sky Blue */
+  --gradient-end: #8B5CF6;        /* Purple/Violet */
+
+  /* Dark Mode - Darker gradient */
+  --gradient-start-dark: #081373;     /* Darker Deep Blue */
+  --gradient-middle-dark: #174373;    /* Darker Cyan */
+  --gradient-end-dark: #37205C;       /* Darker Purple */
+
+  /* Gradient definitions */
+  --gradient-light: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+  --gradient-dark: linear-gradient(90deg, var(--gradient-start-dark) 0%, var(--gradient-middle-dark) 50%, var(--gradient-end-dark) 100%);
+}
+
+/* Dark mode override */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gradient-start: var(--gradient-start-dark);
+    --gradient-middle: var(--gradient-middle-dark);
+    --gradient-end: var(--gradient-end-dark);
+  }
+}
+
+/* Manual dark mode class */
+[data-theme="dark"] {
+  --gradient-start: var(--gradient-start-dark);
+  --gradient-middle: var(--gradient-middle-dark);
+  --gradient-end: var(--gradient-end-dark);
+}

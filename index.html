@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Whisperers - Gradient Testing Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Control Panel -->
+        <aside class="control-panel">
+            <div class="panel-header">
+                <h1>Gradient Tester</h1>
+                <p class="subtitle">AI Whisperers Color Lab</p>
+            </div>
+
+            <!-- Color Inputs Section -->
+            <section class="color-inputs">
+                <div class="section-header">
+                    <h2>Colors</h2>
+                    <button id="addColorBtn" class="btn-icon" title="Add color">+</button>
+                </div>
+
+                <div id="colorList" class="color-list">
+                    <!-- Color inputs will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Gradient Controls -->
+            <section class="gradient-controls">
+                <h2>Gradient Settings</h2>
+
+                <div class="control-group">
+                    <label for="gradientType">Type</label>
+                    <select id="gradientType">
+                        <option value="linear">Linear</option>
+                        <option value="radial">Radial</option>
+                        <option value="conic">Conic</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="angleControl">
+                    <label for="gradientAngle">Angle: <span id="angleValue">90</span>°</label>
+                    <input type="range" id="gradientAngle" min="0" max="360" value="90">
+                </div>
+            </section>
+
+            <!-- Preset Colors -->
+            <section class="presets">
+                <h2>Presets</h2>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="current">Current Brand</button>
+                    <button class="preset-btn" data-preset="recommended">Recommended</button>
+                    <button class="preset-btn" data-preset="warm">Warm Palette</button>
+                    <button class="preset-btn" data-preset="cool">Cool Palette</button>
+                    <button class="preset-btn" data-preset="monochrome">Monochrome</button>
+                </div>
+            </section>
+
+            <!-- Profiles Section -->
+            <section class="profiles-section">
+                <h2>My Profiles</h2>
+
+                <div class="profile-save">
+                    <input
+                        type="text"
+                        id="profileName"
+                        class="profile-input"
+                        placeholder="Profile name..."
+                        maxlength="30"
+                    >
+                    <button id="saveProfileBtn" class="btn-save" title="Save current colors as profile">
+                        💾 Save
+                    </button>
+                </div>
+
+                <div id="profileList" class="profile-list">
+                    <p class="empty-message">No saved profiles yet</p>
+                </div>
+            </section>
+
+            <!-- Export Section -->
+            <section class="export-section">
+                <h2>Export</h2>
+                <div class="export-buttons">
+                    <button id="copyCssBtn" class="btn-secondary">Copy CSS</button>
+                    <button id="copyHexBtn" class="btn-secondary">Copy Hex</button>
+                </div>
+                <textarea id="cssOutput" readonly placeholder="CSS code will appear here..."></textarea>
+            </section>
+        </aside>
+
+        <!-- Preview Area -->
+        <main class="preview-area">
+            <div class="preview-header">
+                <h2>Live Preview</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="components">Components</button>
+                    <button class="view-btn" data-view="fullpage">Full Page</button>
+                </div>
+            </div>
+
+            <!-- Components View -->
+            <div id="componentsView" class="preview-content">
+                <!-- Hero Section -->
+                <section class="mockup-section hero-section">
+                    <div class="hero-content">
+                        <h1 class="hero-title">AI Whisperers</h1>
+                        <p class="hero-subtitle">Translating AI into Action</p>
+                        <button class="btn-primary">Get Started</button>
+                        <button class="btn-outline">Learn More</button>
+                    </div>
+                </section>
+
+                <!-- Buttons -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Buttons</h3>
+                    <div class="button-grid">
+                        <button class="btn-primary">Primary Button</button>
+                        <button class="btn-secondary">Secondary Button</button>
+                        <button class="btn-outline">Outline Button</button>
+                        <button class="btn-ghost">Ghost Button</button>
+                        <button class="btn-primary btn-small">Small</button>
+                        <button class="btn-primary btn-large">Large Button</button>
+                    </div>
+                </section>
+
+                <!-- Cards -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Cards</h3>
+                    <div class="card-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Consulting Services</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Strategic AI guidance and implementation for businesses of all sizes.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                        </div>
+
+                        <div class="card card-highlight">
+                            <div class="card-header">
+                                <h4>AI Education</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Comprehensive training programs for emerging markets and enterprises.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Data Solutions</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Hybrid parsing tools for messy, real-world datasets.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Text & Typography -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Typography</h3>
+                    <div class="typography-samples">
+                        <h1>Heading 1 - Making AI Accessible</h1>
+                        <h2>Heading 2 - Pragmatic Solutions</h2>
+                        <h3>Heading 3 - Real Results</h3>
+                        <p class="body-large">Large body text: AI Whisperers translates AI complexity into business clarity through practical consulting and education.</p>
+                        <p>Regular body text: We help businesses solve messy data problems with hybrid solutions that actually work.</p>
+                        <p class="body-small">Small text: Our approach combines regex, heuristics, and AI for optimal results.</p>
+                        <a href="#" class="text-link">This is a text link</a>
+                    </div>
+                </section>
+
+                <!-- Navigation Bar -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Navigation</h3>
+                    <nav class="navbar">
+                        <div class="nav-brand">AI Whisperers</div>
+                        <ul class="nav-menu">
+                            <li><a href="#" class="nav-link active">Home</a></li>
+                            <li><a href="#" class="nav-link">Services</a></li>
+                            <li><a href="#" class="nav-link">About</a></li>
+                            <li><a href="#" class="nav-link">Contact</a></li>
+                        </ul>
+                        <button class="nav-cta">Book Consultation</button>
+                    </nav>
+                </section>
+
+                <!-- Badges & Tags -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Badges & Tags</h3>
+                    <div class="badge-grid">
+                        <span class="badge">New</span>
+                        <span class="badge badge-primary">Featured</span>
+                        <span class="badge badge-secondary">Popular</span>
+                        <span class="badge badge-outline">Coming Soon</span>
+                        <span class="tag">AI Consulting</span>
+                        <span class="tag">Education</span>
+                        <span class="tag">Data Parsing</span>
+                    </div>
+                </section>
+
+                <!-- Alerts & Notifications -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Alerts</h3>
+                    <div class="alert alert-info">
+                        <strong>Info:</strong> New AI literacy programs now available for emerging markets.
+                    </div>
+                    <div class="alert alert-success">
+                        <strong>Success:</strong> Your consultation request has been received.
+                    </div>
+                    <div class="alert alert-warning">
+                        <strong>Warning:</strong> This dataset requires additional preprocessing.
+                    </div>
+                </section>
+
+                <!-- Form Elements -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Form Elements</h3>
+                    <form class="sample-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service</label>
+                            <select id="service">
+                                <option>AI Consulting</option>
+                                <option>Education Programs</option>
+                                <option>Data Solutions</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="3" placeholder="Tell us about your needs..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Submit Request</button>
+                    </form>
+                </section>
+
+                <!-- Progress & Loading -->
+                <section class="mockup-section">
+                    <h3 class="section-title">Progress Indicators</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="spinner"></div>
+                </section>
+            </div>
+
+            <!-- Full Page View -->
+            <div id="fullpageView" class="preview-content" style="display: none;">
+                <div class="fullpage-mockup">
+                    <!-- Navigation -->
+                    <nav class="navbar">
+                        <div class="nav-brand">AI Whisperers</div>
+                        <ul class="nav-menu">
+                            <li><a href="#" class="nav-link active">Home</a></li>
+                            <li><a href="#" class="nav-link">Services</a></li>
+                            <li><a href="#" class="nav-link">About</a></li>
+                            <li><a href="#" class="nav-link">Contact</a></li>
+                        </ul>
+                        <button class="nav-cta">Book Consultation</button>
+                    </nav>
+
+                    <!-- Hero -->
+                    <section class="hero-section">
+                        <div class="hero-content">
+                            <h1 class="hero-title">Translating AI into Action</h1>
+                            <p class="hero-subtitle">Practical AI consulting and education for businesses worldwide</p>
+                            <div class="hero-buttons">
+                                <button class="btn-primary btn-large">Get Started</button>
+                                <button class="btn-outline btn-large">Learn More</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Services -->
+                    <section class="services-section">
+                        <h2 class="section-heading">Our Services</h2>
+                        <div class="card-grid">
+                            <div class="card">
+                                <div class="card-icon">🎯</div>
+                                <h3>AI Consulting</h3>
+                                <p>Strategic guidance and practical implementation for your AI initiatives.</p>
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                            <div class="card card-highlight">
+                                <div class="card-icon">📚</div>
+                                <h3>AI Education</h3>
+                                <p>Comprehensive training programs designed for your team's needs.</p>
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon">🔧</div>
+                                <h3>Data Solutions</h3>
+                                <p>Hybrid parsing tools for complex, messy datasets.</p>
+                                <a href="#" class="card-link">Learn more →</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CTA Section -->
+                    <section class="cta-section">
+                        <h2>Ready to get started?</h2>
+                        <p>Schedule a consultation to discuss your AI needs.</p>
+                        <button class="btn-primary btn-large">Book a Consultation</button>
+                    </section>
+
+                    <!-- Footer -->
+                    <footer class="footer">
+                        <p>&copy; 2025 AI Whisperers. All rights reserved.</p>
+                    </footer>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
