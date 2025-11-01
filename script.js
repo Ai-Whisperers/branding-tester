@@ -84,6 +84,7 @@ const container = document.querySelector('.container');
 function init() {
     loadProfiles();
     loadPanelState();
+    loadPreviewSectionStates();
     renderColorInputs();
     renderProfileList();
     updateGradient();
@@ -703,9 +704,10 @@ function loadPanelState() {
 
 // Setup collapsible sections
 function setupCollapsibleSections() {
-    const sections = document.querySelectorAll('.control-panel section');
+    // Control panel sections
+    const controlSections = document.querySelectorAll('.control-panel section');
 
-    sections.forEach(section => {
+    controlSections.forEach(section => {
         const toggle = section.querySelector('.section-toggle');
         if (toggle) {
             toggle.addEventListener('click', () => {
@@ -721,6 +723,81 @@ function setupCollapsibleSections() {
             });
         }
     });
+
+    // Preview sections
+    const previewSections = document.querySelectorAll('.preview-section');
+
+    previewSections.forEach(section => {
+        const toggle = section.querySelector('.section-toggle-preview');
+        if (toggle) {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent section click when clicking toggle
+                togglePreviewSection(section);
+            });
+        }
+
+        // Also allow clicking the whole section when collapsed
+        section.addEventListener('click', () => {
+            if (section.classList.contains('section-collapsed')) {
+                togglePreviewSection(section);
+            }
+        });
+    });
+}
+
+// Toggle preview section
+function togglePreviewSection(section) {
+    const isCollapsed = section.classList.contains('section-collapsed');
+
+    if (isCollapsed) {
+        section.classList.remove('section-collapsed');
+        section.classList.add('section-expanded');
+    } else {
+        section.classList.remove('section-expanded');
+        section.classList.add('section-collapsed');
+    }
+
+    // Save state to localStorage
+    savePreviewSectionStates();
+}
+
+// Save preview section states
+function savePreviewSectionStates() {
+    const states = {};
+    const previewSections = document.querySelectorAll('.preview-section');
+
+    previewSections.forEach((section, index) => {
+        states[index] = {
+            collapsed: section.classList.contains('section-collapsed')
+        };
+    });
+
+    localStorage.setItem('gradient-tester-preview-states', JSON.stringify(states));
+}
+
+// Load preview section states
+function loadPreviewSectionStates() {
+    const saved = localStorage.getItem('gradient-tester-preview-states');
+    if (saved) {
+        try {
+            const states = JSON.parse(saved);
+            const previewSections = document.querySelectorAll('.preview-section');
+
+            previewSections.forEach((section, index) => {
+                if (states[index]) {
+                    if (states[index].collapsed) {
+                        section.classList.remove('section-expanded');
+                        section.classList.add('section-collapsed');
+                    } else {
+                        section.classList.remove('section-collapsed');
+                        section.classList.add('section-expanded');
+                    }
+                }
+            });
+        } catch (e) {
+            console.error('Failed to load preview states:', e);
+        }
+    }
 }
 
 // ===== Attach Event Listeners =====

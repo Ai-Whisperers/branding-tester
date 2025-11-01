@@ -669,6 +669,63 @@ input[type="range"]::-moz-range-thumb {
     letter-spacing: 0.05em;
 }
 
+/* Preview section toggles */
+.section-toggle-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+    padding: var(--space-sm) 0;
+    margin-bottom: var(--space-md);
+}
+
+.section-toggle-preview:hover {
+    color: var(--color-1);
+}
+
+.section-toggle-preview .toggle-icon {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: var(--space-md);
+}
+
+.preview-section.section-collapsed .section-toggle-preview .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.preview-section.section-expanded .section-toggle-preview .toggle-icon {
+    transform: rotate(0deg);
+}
+
+.preview-section.section-collapsed .preview-section-content {
+    display: none;
+}
+
+.preview-section.section-expanded .preview-section-content {
+    display: block;
+}
+
+.preview-section-content {
+    animation: slideDown 0.3s ease;
+}
+
+/* Collapsed state - make section smaller */
+.preview-section.section-collapsed {
+    padding: var(--space-lg) var(--space-2xl);
+    cursor: pointer;
+}
+
+.preview-section.section-collapsed:hover {
+    background: var(--bg-secondary);
+}
+
+.preview-section.section-collapsed .section-title {
+    margin-bottom: 0;
+}
+
 /* Hero Section */
 .hero-section {
     background: var(--gradient);
