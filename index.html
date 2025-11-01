@@ -9,27 +9,50 @@
 <body>
     <div class="container">
         <!-- Control Panel -->
-        <aside class="control-panel">
+        <aside class="control-panel" id="controlPanel">
             <div class="panel-header">
-                <h1>Gradient Tester</h1>
-                <p class="subtitle">AI Whisperers Color Lab</p>
+                <div class="panel-title">
+                    <h1>Gradient Tester</h1>
+                    <p class="subtitle">AI Whisperers Color Lab</p>
+                </div>
+                <div class="panel-controls">
+                    <button id="toggleDetachBtn" class="btn-icon" title="Detach panel">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 2H14V6M14 2L8 8M6 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button id="minimizeBtn" class="btn-icon" title="Minimize panel" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Color Inputs Section -->
-            <section class="color-inputs">
+            <section class="color-inputs section-expanded">
                 <div class="section-header">
                     <h2>Colors</h2>
                     <button id="addColorBtn" class="btn-icon" title="Add color">+</button>
                 </div>
 
-                <div id="colorList" class="color-list">
+                <div id="colorList" class="color-list section-content">
                     <!-- Color inputs will be dynamically added here -->
                 </div>
             </section>
 
             <!-- Gradient Controls -->
-            <section class="gradient-controls">
-                <h2>Gradient Settings</h2>
+            <section class="gradient-controls section-expanded">
+                <div class="section-header">
+                    <h2 class="section-toggle">
+                        <span>Gradient Settings</span>
+                        <svg class="toggle-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </h2>
+                </div>
+
+                <div class="section-content">
 
                 <div class="control-group">
                     <label for="gradientType">Type</label>
@@ -40,27 +63,46 @@
                     </select>
                 </div>
 
-                <div class="control-group" id="angleControl">
-                    <label for="gradientAngle">Angle: <span id="angleValue">90</span>°</label>
-                    <input type="range" id="gradientAngle" min="0" max="360" value="90">
+                    <div class="control-group" id="angleControl">
+                        <label for="gradientAngle">Angle: <span id="angleValue">90</span>°</label>
+                        <input type="range" id="gradientAngle" min="0" max="360" value="90">
+                    </div>
                 </div>
             </section>
 
             <!-- Preset Colors -->
-            <section class="presets">
-                <h2>Presets</h2>
-                <div class="preset-buttons">
-                    <button class="preset-btn" data-preset="current">Current Brand</button>
-                    <button class="preset-btn" data-preset="recommended">Recommended</button>
-                    <button class="preset-btn" data-preset="warm">Warm Palette</button>
-                    <button class="preset-btn" data-preset="cool">Cool Palette</button>
-                    <button class="preset-btn" data-preset="monochrome">Monochrome</button>
+            <section class="presets section-collapsed">
+                <div class="section-header">
+                    <h2 class="section-toggle">
+                        <span>Presets</span>
+                        <svg class="toggle-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </h2>
+                </div>
+                <div class="section-content">
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="current">Current Brand</button>
+                        <button class="preset-btn" data-preset="recommended">Recommended</button>
+                        <button class="preset-btn" data-preset="warm">Warm Palette</button>
+                        <button class="preset-btn" data-preset="cool">Cool Palette</button>
+                        <button class="preset-btn" data-preset="monochrome">Monochrome</button>
+                    </div>
                 </div>
             </section>
 
             <!-- Profiles Section -->
-            <section class="profiles-section">
-                <h2>My Profiles</h2>
+            <section class="profiles-section section-collapsed">
+                <div class="section-header">
+                    <h2 class="section-toggle">
+                        <span>My Profiles</span>
+                        <svg class="toggle-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </h2>
+                </div>
+
+                <div class="section-content">
 
                 <div class="profile-save">
                     <input
@@ -75,19 +117,29 @@
                     </button>
                 </div>
 
-                <div id="profileList" class="profile-list">
-                    <p class="empty-message">No saved profiles yet</p>
+                    <div id="profileList" class="profile-list">
+                        <p class="empty-message">No saved profiles yet</p>
+                    </div>
                 </div>
             </section>
 
             <!-- Export Section -->
-            <section class="export-section">
-                <h2>Export</h2>
-                <div class="export-buttons">
-                    <button id="copyCssBtn" class="btn-secondary">Copy CSS</button>
-                    <button id="copyHexBtn" class="btn-secondary">Copy Hex</button>
+            <section class="export-section section-collapsed">
+                <div class="section-header">
+                    <h2 class="section-toggle">
+                        <span>Export</span>
+                        <svg class="toggle-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </h2>
                 </div>
-                <textarea id="cssOutput" readonly placeholder="CSS code will appear here..."></textarea>
+                <div class="section-content">
+                    <div class="export-buttons">
+                        <button id="copyCssBtn" class="btn-secondary">Copy CSS</button>
+                        <button id="copyHexBtn" class="btn-secondary">Copy Hex</button>
+                    </div>
+                    <textarea id="cssOutput" readonly placeholder="CSS code will appear here..."></textarea>
+                </div>
             </section>
         </aside>
 

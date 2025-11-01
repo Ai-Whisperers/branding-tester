@@ -3,6 +3,14 @@ let colors = ['#1B3CFF', '#3BA6FF', '#8B5CF6'];
 let gradientType = 'linear';
 let gradientAngle = 90;
 
+// Panel state
+let panelState = {
+    isDetached: false,
+    isMinimized: false,
+    position: { x: 20, y: 20 },
+    size: { width: 380, height: null }
+};
+
 // ===== Preset Palettes =====
 const presets = {
     current: {
@@ -66,13 +74,21 @@ const profileNameInput = document.getElementById('profileName');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
 const profileList = document.getElementById('profileList');
 
+// Panel elements
+const controlPanel = document.getElementById('controlPanel');
+const toggleDetachBtn = document.getElementById('toggleDetachBtn');
+const minimizeBtn = document.getElementById('minimizeBtn');
+const container = document.querySelector('.container');
+
 // ===== Initialization =====
 function init() {
     loadProfiles();
+    loadPanelState();
     renderColorInputs();
     renderProfileList();
     updateGradient();
     attachEventListeners();
+    setupCollapsibleSections();
 }
 
 // ===== Render Color Inputs =====
@@ -539,8 +555,180 @@ function deleteProfile(id) {
     }
 }
 
+// ===== Panel Management =====
+
+// Toggle detach/attach
+function toggleDetach() {
+    panelState.isDetached = !panelState.isDetached;
+
+    if (panelState.isDetached) {
+        controlPanel.classList.add('detached');
+        container.classList.add('panel-detached');
+        minimizeBtn.style.display = 'flex';
+        toggleDetachBtn.title = 'Attach panel';
+
+        // Apply saved position
+        controlPanel.style.left = panelState.position.x + 'px';
+        controlPanel.style.top = panelState.position.y + 'px';
+
+        if (panelState.size.width) {
+            controlPanel.style.width = panelState.size.width + 'px';
+        }
+
+        setupDragging();
+    } else {
+        controlPanel.classList.remove('detached');
+        container.classList.remove('panel-detached');
+        minimizeBtn.style.display = 'none';
+        toggleDetachBtn.title = 'Detach panel';
+
+        // Reset styles
+        controlPanel.style.left = '';
+        controlPanel.style.top = '';
+        controlPanel.style.width = '';
+        controlPanel.style.height = '';
+
+        removeDragging();
+    }
+
+    savePanelState();
+}
+
+// Toggle minimize
+function toggleMinimize() {
+    panelState.isMinimized = !panelState.isMinimized;
+
+    if (panelState.isMinimized) {
+        controlPanel.classList.add('minimized');
+        minimizeBtn.title = 'Maximize panel';
+    } else {
+        controlPanel.classList.remove('minimized');
+        minimizeBtn.title = 'Minimize panel';
+    }
+
+    savePanelState();
+}
+
+// Dragging functionality
+let isDragging = false;
+let dragOffset = { x: 0, y: 0 };
+
+function setupDragging() {
+    const panelHeader = controlPanel.querySelector('.panel-header');
+
+    panelHeader.addEventListener('mousedown', startDragging);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDragging);
+}
+
+function removeDragging() {
+    const panelHeader = controlPanel.querySelector('.panel-header');
+
+    panelHeader.removeEventListener('mousedown', startDragging);
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', stopDragging);
+}
+
+function startDragging(e) {
+    // Don't start dragging if clicking on buttons
+    if (e.target.closest('button')) return;
+
+    isDragging = true;
+    const rect = controlPanel.getBoundingClientRect();
+    dragOffset.x = e.clientX - rect.left;
+    dragOffset.y = e.clientY - rect.top;
+
+    controlPanel.style.cursor = 'grabbing';
+}
+
+function drag(e) {
+    if (!isDragging) return;
+
+    e.preventDefault();
+
+    let newX = e.clientX - dragOffset.x;
+    let newY = e.clientY - dragOffset.y;
+
+    // Keep panel within viewport
+    const rect = controlPanel.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    newX = Math.max(0, Math.min(newX, maxX));
+    newY = Math.max(0, Math.min(newY, maxY));
+
+    controlPanel.style.left = newX + 'px';
+    controlPanel.style.top = newY + 'px';
+
+    panelState.position.x = newX;
+    panelState.position.y = newY;
+}
+
+function stopDragging() {
+    if (isDragging) {
+        isDragging = false;
+        controlPanel.style.cursor = '';
+        savePanelState();
+    }
+}
+
+// Save panel state to localStorage
+function savePanelState() {
+    localStorage.setItem('gradient-tester-panel-state', JSON.stringify(panelState));
+}
+
+// Load panel state from localStorage
+function loadPanelState() {
+    const saved = localStorage.getItem('gradient-tester-panel-state');
+    if (saved) {
+        try {
+            const savedState = JSON.parse(saved);
+            panelState = { ...panelState, ...savedState };
+
+            // Apply saved state
+            if (panelState.isDetached) {
+                // Small delay to ensure DOM is ready
+                setTimeout(() => {
+                    toggleDetach();
+                    if (panelState.isMinimized) {
+                        toggleMinimize();
+                    }
+                }, 0);
+            }
+        } catch (e) {
+            console.error('Failed to load panel state:', e);
+        }
+    }
+}
+
+// Setup collapsible sections
+function setupCollapsibleSections() {
+    const sections = document.querySelectorAll('.control-panel section');
+
+    sections.forEach(section => {
+        const toggle = section.querySelector('.section-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const isCollapsed = section.classList.contains('section-collapsed');
+
+                if (isCollapsed) {
+                    section.classList.remove('section-collapsed');
+                    section.classList.add('section-expanded');
+                } else {
+                    section.classList.remove('section-expanded');
+                    section.classList.add('section-collapsed');
+                }
+            });
+        }
+    });
+}
+
 // ===== Attach Event Listeners =====
 function attachEventListeners() {
+    // Panel controls
+    toggleDetachBtn.addEventListener('click', toggleDetach);
+    minimizeBtn.addEventListener('click', toggleMinimize);
+
     // Add color button
     addColorBtn.addEventListener('click', addColor);
 

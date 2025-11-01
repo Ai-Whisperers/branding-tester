@@ -67,6 +67,14 @@ body {
 
 .panel-header {
     margin-bottom: var(--space-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.panel-title {
+    flex: 1;
 }
 
 .panel-header h1 {
@@ -78,6 +86,64 @@ body {
 .subtitle {
     color: var(--text-secondary);
     font-size: 0.875rem;
+}
+
+.panel-controls {
+    display: flex;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+}
+
+/* Detached panel styles */
+.control-panel.detached {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 380px;
+    height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    resize: both;
+    overflow: auto;
+}
+
+.control-panel.detached .panel-header {
+    cursor: move;
+    user-select: none;
+    position: sticky;
+    top: 0;
+    background: var(--bg-primary);
+    z-index: 10;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--space-lg);
+}
+
+.control-panel.minimized {
+    height: auto;
+    max-height: none;
+    resize: none;
+}
+
+.control-panel.minimized .panel-header {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.control-panel.minimized > section {
+    display: none;
+}
+
+/* Preview area when panel is detached */
+.container.panel-detached {
+    grid-template-columns: 1fr;
+}
+
+.container.panel-detached .preview-area {
+    padding-left: var(--space-2xl);
 }
 
 /* Sections */
@@ -102,6 +168,57 @@ body {
     font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: var(--space-md);
+}
+
+/* Collapsible sections */
+.section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.section-toggle:hover {
+    color: var(--color-1);
+}
+
+.section-toggle .toggle-icon {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.section-collapsed .section-toggle .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.section-expanded .section-toggle .toggle-icon {
+    transform: rotate(0deg);
+}
+
+.section-collapsed .section-content {
+    display: none;
+}
+
+.section-expanded .section-content {
+    display: block;
+}
+
+.section-content {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===== Color Inputs ===== */
